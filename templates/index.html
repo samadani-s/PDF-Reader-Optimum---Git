@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>تبدیل هوشمند PDF به Word</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    @font-face {
+      font-family: 'B Mitra';
+      src: url('/static/BMitra.ttf') format('truetype');
+    }
+    body, h2, input, button, .log-line {
+      font-family: 'B Mitra', Tahoma, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>تبدیل هوشمند PDF به Word</h2>
+    <form id="upload-form" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".pdf" required>
+      <button type="submit">تبدیل کن</button>
+    </form>
+
+    <div id="progress-bar" class="progress-bar"></div>
+    <div id="log-box" class="log-box"></div>
+    <a id="download-link" href="#" style="display:none;" download>دانلود فایل Word</a>
+  </div>
+
+  <script>
+    const socket = io();
+    const logBox = document.getElementById('log-box');
+    const downloadLink = document.getElementById('download-link');
+    const progressBar = document.getElementById('progress-bar');
+
+    const colors = {
+      info: "#2196f3",
+      success: "#4caf50",
+      error: "#f44336",
+      warn: "#ff9800",
+      log: "#9e9e9e"
+    };
+
+    let step = 0;
+    const totalSteps = 6;
+
+    socket.on('log', data => {
+      const line = document.createElement('div');
+      line.className = 'log-line';
+      line.style.borderRight = `5px solid ${colors[data.level] || "#2196f3"}`;
+      line.innerHTML = `<span class='tag'>●</span> ${data.message}`;
+      logBox.appendChild(line);
+      logBox.scrollTop = logBox.scrollHeight;
+
+      step++;
+      const percent = Math.min(100, (step / totalSteps) * 100);
+      progressBar.style.width = percent + '%';
+    });
+
+    socket.on('done', data => {
+      downloadLink.href = data.path;
+      downloadLink.style.display = 'block';
+      downloadLink.innerText = "دانلود فایل Word";
+    });
+
+    document.getElementById('upload-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      fetch("/", { method: "POST", body: formData });
+      logBox.innerHTML = '';
+      downloadLink.style.display = 'none';
+      progressBar.style.width = '0%';
+      step = 0;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+body {
+  background: #f4f7fa;
+  direction: rtl;
+  padding: 20px;
+  margin: 0;
+}
+
+.container {
+  background: white;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input[type="file"], button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+
+button {
+  background: #0066cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.log-box {
+  margin-top: 20px;
+  background: #1e1e1e;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: Consolas, monospace;
+  font-size: 14px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.log-line {
+  padding: 5px;
+  margin-bottom: 6px;
+  border-right: 4px solid #2196f3;
+}
+
+.log-line .tag {
+  margin-left: 6px;
+  color: #00bcd4;
+}
+
+#download-link {
+  display: block;
+  margin-top: 15px;
+  background: #28a745;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.progress-bar {
+  height: 6px;
+  width: 0%;
+  background: #007bff;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  margin-bottom: 10px;
+}
